@@ -4,7 +4,7 @@ import { startLogin, startLoginGoogle } from '../../actions'
 import { useForm } from '../../hooks/useForm'
 
 export const LoginScreen = () => {
-  const { handleInputChange, email, password, reset } = useForm({ email: 'nicolascorrearestrepo@gmail.com', password: '123456' })
+  const { handleInputChange, email, password, reset } = useForm({ email: '', password: '' })
   const send = useDispatch()
   const { isLoading } = useSelector(state => state.ui)
 

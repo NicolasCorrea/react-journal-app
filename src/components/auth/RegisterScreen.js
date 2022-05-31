@@ -5,7 +5,7 @@ import { useForm } from '../../hooks/useForm'
 import { validateEmail } from '../../helpers'
 
 export const RegisterScreen = () => {
-  const { handleInputChange, name, email, password, password2, reset } = useForm({ name: 'Nicolas', email: 'nicolascorrearestrepo@gmail.com', password: '123456', password2: '123456' })
+  const { handleInputChange, name, email, password, password2, reset } = useForm({ name: '', email: '', password: '', password2: '' })
   const ui = useSelector(state => state.ui)
   const send = useDispatch()
 
