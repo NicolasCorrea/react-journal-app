@@ -1,78 +1,87 @@
-import { firebase, googleAuthProvider } from "../firebase/firebaseConfig";
-import { types } from "../types/types";
-import { finishLoading, startLoading } from "./ui";
-import Swal from "sweetalert2";
+import Swal from 'sweetalert2'
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, updateProfile } from 'firebase/auth'
+import { auth, googleAuthProvider } from '../firebase'
+import { types } from '../types'
+import { uiFinishLoading, uiStartLoading } from './ui'
 
-export const startLoginEmailPassword = (email, password) => {
-  return (dispatch) => {
-    dispatch(startLoading());
-    firebase
-      .auth()
-      .signInWithEmailAndPassword(email, password)
-      .then(({ user }) => {
-        dispatch(login(user.uid, user.displayName));
-        dispatch(finishLoading());
+export const login = ({ uid, displayName, email }) => {
+  return {
+    type: types.login,
+    payload: {
+      uid,
+      displayName,
+      email
+    }
+  }
+}
+
+export const startLogin = ({ email, password }) => {
+  return async (dispatch) => {
+    try {
+      dispatch(uiStartLoading())
+      const { user } = await signInWithEmailAndPassword(auth, email, password)
+      dispatch(login(user))
+      dispatch(uiFinishLoading())
+    } catch (error) {
+      dispatch(uiFinishLoading())
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Something went wrong!'
       })
-      .catch((err) => {
-        Swal.fire("Error", err.message, "error");
-        dispatch(finishLoading());
-      });
-  };
-};
+    }
+  }
+}
 
-export const startRegisterWithEmailPasswordName = (email, password, name) => {
-  return (dispatch) => {
-    dispatch(startLoading());
-    firebase
-      .auth()
-      .createUserWithEmailAndPassword(email, password)
-      .then(async ({ user }) => {
-        await user.updateProfile({
-          displayName: name,
-        });
-        console.log(user);
-        dispatch(login(user.uid, user.displayName));
-        dispatch(finishLoading());
+export const signUp = ({ name, email, password }) => {
+  return async (dispatch) => {
+    try {
+      const { user } = await createUserWithEmailAndPassword(auth, email, password)
+      await updateProfile(user, { displayName: name })
+      dispatch(login({ uid: user.uid, displayName: user.displayName, email: user.email }))
+    } catch (error) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Something went wrong!'
       })
-      .catch((e) => {
-        console.log(e);
-        Swal.fire("Error", e.message, "error");
-        dispatch(finishLoading());
-      });
-  };
-};
+    }
+  }
+}
 
-export const StartGoogleLogin = () => {
-  return (dispatch) => {
-    firebase
-      .auth()
-      .signInWithPopup(googleAuthProvider)
-      .then(({ user }) => {
-        dispatch(login(user.uid, user.displayName));
+export const startLoginGoogle = () => {
+  return async (dispatch) => {
+    try {
+      const result = await signInWithPopup(auth, googleAuthProvider)
+      const { user } = result
+      dispatch(login({ uid: user.uid, displayName: user.displayName, email: user.email }))
+    } catch (error) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Something went wrong!'
       })
-      .catch((err) => console.log(err));
-  };
-};
-
-export const login = (uid, displayName) => ({
-  type: types.login,
-  payload: {
-    uid,
-    displayName,
-  },
-});
+    }
+  }
+}
 
 export const startLogout = () => {
   return async (dispatch) => {
     try {
-      await firebase.auth().signOut();
-      dispatch(logout());
+      await auth.signOut()
+      dispatch(logout())
     } catch (error) {
-      console.log(error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Something went wrong!'
+      })
     }
-  };
-};
+  }
+}
 
-export const logout = () => ({
-  type: types.logout,
-});
+export const logout = () => {
+  return {
+    type: types.logout
+  }
+}

@@ -1,19 +1,23 @@
-import { types } from "../types/types";
+import { types } from './../types'
 
-/* {
-  uid: "asdasdasd",
-  name: "nicolas"
-} */
+/*
+  { uid: '',
+    name: '',
+  }
+*/
+
 export const authReducer = (state = {}, action) => {
   switch (action.type) {
-    case types.login:
+    case types.login: {
       return {
         uid: action.payload.uid,
         name: action.payload.displayName,
-      };
+        email: action.payload.email
+      }
+    }
     case types.logout:
-      return {};
+      return {}
     default:
-      return state;
+      return state
   }
-};
+}

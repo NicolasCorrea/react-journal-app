@@ -1,46 +1,64 @@
+import { types } from '../types'
+
 /**
  * {
- *    notes: []
- *    active: null,
- *    active: {
- *      id: "asdasdasfw324sdhfAS",
- *      title: "",
- *      body: "",
- *      imageUrl: "",
- *      date: 12456234523
- *    }
+ *  notes: [},
+ *  active: {
+ *    id: '',
+ *    title: '',
+ *    body: '',
+ *    imageUrl: '',
+ *    date: '',
+ *  } || null,
  * }
- */
-
-import { types } from "../types/types";
+*/
 
 const initialState = {
   notes: [],
-  active: null,
-};
+  active: null
+}
 
 export const notesReducer = (state = initialState, action) => {
   switch (action.type) {
+    // case types.notesAddNew:
+    //   return {
+    //     ...state,
+    //     notes: [
+    //       ...state.notes,
+    //       action.note
+    //     ]
+    //   }
     case types.notesActive:
       return {
         ...state,
-        active: {
-          ...action.payload,
-        },
-      };
+        active: { ...action.payload }
+      }
+    // case types.notesUpdate:
+    //   return {
+    //     ...state,
+    //     notes: state.notes.map(note => {
+    //       if (note.id === action.id) {
+    //         return {
+    //           ...note,
+    //           ...action.updates
+    //         }
+    //       } else {
+    //         return note
+    //       }
+    //     })
+    //   }
+    // case types.notesDelete:
+    //   return {
+    //     ...state,
+    //     notes: state.notes.filter(note => note.id !== action.id),
+    //     active: null
+    //   }
     case types.notesLoad:
       return {
         ...state,
-        notes: [...action.payload],
-      };
-    case types.notesUpdated:
-      return {
-        ...state,
-        notes: state.notes.map((note) =>
-          note.id === action.payload.id ? action.payload.note : note
-        ),
-      };
+        notes: [...action.payload]
+      }
     default:
-      return state;
+      return state
   }
-};
+}
