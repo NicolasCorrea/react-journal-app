@@ -42,7 +42,7 @@ export const RegisterScreen = () => {
   }
 
   return (
-    <>
+    <section className='animate__animated animate__fadeIn animate__faster'>
       <h3 className="auth__title">Register</h3>
 
       <form onSubmit={handleSubmit}>
@@ -105,6 +105,6 @@ export const RegisterScreen = () => {
         </Link>
 
       </form>
-    </>
+    </section>
   )
 }
