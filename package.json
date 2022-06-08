@@ -47,6 +47,10 @@
     ]
   },
   "devDependencies": {
+    "@zarconontol/enzyme-adapter-react-18": "^0.7.3",
+    "cloudinary": "^1.30.0",
+    "enzyme": "^3.11.0",
+    "enzyme-to-json": "^3.6.2",
     "standard": "^17.0.0"
   }
 }

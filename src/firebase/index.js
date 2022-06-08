@@ -1,1 +1,1 @@
-export { app, auth, analytics, googleAuthProvider } from './config'
+export { app, auth, googleAuthProvider } from './config'
